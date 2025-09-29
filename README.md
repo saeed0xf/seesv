@@ -36,7 +36,7 @@ OUTPUT:
 ```
 ### Basic example video
 
-https://github.com/saeed0xf/seesv/assets/basic_example.mp4
+https://github.com/saeed0xf/seesv/blob/main/assets/basic_example.mp4
 
 ## Supports
 
