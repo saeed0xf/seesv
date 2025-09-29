@@ -1,4 +1,4 @@
-module seesv
+module github.com/saeed0xf/seesv
 
 go 1.25.0
 

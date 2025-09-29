@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/projectdiscovery/goflags"
-	"seesv/internal/operations"
+	"github.com/saeed0xf/seesv/internal/operations"
 )
 
 // Options represents the CLI configuration

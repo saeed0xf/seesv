@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"seesv/internal/cli"
+	"github.com/saeed0xf/seesv/internal/cli"
 )
 
 func main() {
