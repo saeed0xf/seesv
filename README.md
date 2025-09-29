@@ -2,7 +2,7 @@
 
 seesv is a CLI tool written in Go that allows you to perform SQL like operations on CSV files. It supports SELECT, INSERT, UPDATE, DELETE, WHERE, ORDER BY, LIMIT, DISTINCT, and aggregation functions.
 
-## Help Menu
+## Usage
 
 ```
 seesv - Perform SQL like queries on CSV files. Search, Extract, Explore CSV.
@@ -34,6 +34,9 @@ OUTPUT:
    -h, -help            Show help message
 
 ```
+# Basic example video
+
+https://github.com/saeed0xf/seesv/assets/basic_example.mp4
 
 ## Supports
 
@@ -298,18 +301,4 @@ seesv -file tests/scope.csv -select "identifier" -where "asset_type = WILDCARD" 
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Dependencies
-
-- [GoFlags](https://github.com/projectdiscovery/goflags) - CLI framework
-- [Gota](https://github.com/go-gota/gota) - DataFrame library for CSV processing
-
-## Changelog
-
-### v1.0.0
-- Initial release with full SQL-like functionality
-- Support for SELECT, INSERT, UPDATE, DELETE operations
-- WHERE conditions and ORDER BY sorting
-- Aggregation functions (COUNT, SUM, AVG, MIN, MAX)
-- Comprehensive error handling and validation
+This project is licensed under the [MIT](https://github.com/saeed0xf/seesv/LICENSE) License - see the LICENSE file for details.
