@@ -287,7 +287,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Dependencies
 
-- [GoFlags](https://github.com/projectdiscovery/goflags) - CLI framework with single dash flag support
+- [GoFlags](https://github.com/projectdiscovery/goflags) - CLI framework
 - [Gota](https://github.com/go-gota/gota) - DataFrame library for CSV processing
 
 ## Changelog
