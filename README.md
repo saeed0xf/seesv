@@ -2,17 +2,7 @@
 
 seesv is a CLI tool written in Go that allows you to perform SQL like operations on CSV files. It supports SELECT, INSERT, UPDATE, DELETE, WHERE, ORDER BY, LIMIT, DISTINCT, and aggregation functions.
 
-### Complex Queries
-For complex operations, you can chain multiple seesv commands:
-
-```bash
-# Filter and aggregate data
-seesv -file sales.csv -select "*" -where "region = North" > north_sales.csv
-seesv -file north_sales.csv -select "SUM(amount), COUNT(*)"
-
-# Export specific data for further analysis
-seesv -file users.csv -select "email" -where "status = active" -raw > active_emails.txt
-```
+## Supports
 
 - **SELECT**: Query and filter CSV data with column selection
 - **INSERT**: Add new rows to CSV files
