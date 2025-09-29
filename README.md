@@ -1,6 +1,6 @@
-# csvql - SQL-like queries on CSV files
+# csvql - Perform SQL like queries on CSV files
 
-`csvql` is a CLI tool written in Go that allows you to perform SQL-like operations on CSV files. It supports SELECT, INSERT, UPDATE, DELETE, WHERE, ORDER BY, LIMIT, DISTINCT, and aggregation functions.
+csvql is a CLI tool written in Go that allows you to perform SQL like operations on CSV files. It supports SELECT, INSERT, UPDATE, DELETE, WHERE, ORDER BY, LIMIT, DISTINCT, and aggregation functions.
 
 ## Features
 
