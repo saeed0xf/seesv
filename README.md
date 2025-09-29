@@ -2,7 +2,17 @@
 
 csvql is a CLI tool written in Go that allows you to perform SQL like operations on CSV files. It supports SELECT, INSERT, UPDATE, DELETE, WHERE, ORDER BY, LIMIT, DISTINCT, and aggregation functions.
 
-## Features
+### Complex Queries
+For complex operations, you can chain multiple csvql commands:
+
+```bash
+# Filter and aggregate data
+csvql -file sales.csv -select "*" -where "region = North" > north_sales.csv
+csvql -file north_sales.csv -select "SUM(amount), COUNT(*)"
+
+# Export specific data for further analysis
+csvql -file users.csv -select "email" -where "status = active" -raw > active_emails.txt
+```
 
 - **SELECT**: Query and filter CSV data with column selection
 - **INSERT**: Add new rows to CSV files
@@ -22,6 +32,13 @@ csvql is a CLI tool written in Go that allows you to perform SQL like operations
 
 ### Prerequisites
 - Go 1.19 or higher
+
+### Install from cli
+
+```
+go install -v github.com/saeed0xf/csvql@latest
+```
+
 
 ### Build from source
 ```bash
@@ -75,7 +92,7 @@ csvql -file data.csv -select "name,age,city"
 #### SELECT with WHERE condition
 ```bash
 csvql -file data.csv -select "name,age" -where "age > 30"
-csvql -file data.csv -select "name,salary" -where "department = 'Engineering'"
+csvql -file data.csv -select "name,department" -where "status = active"
 ```
 
 #### SELECT with ORDER BY
@@ -105,26 +122,20 @@ csvql -file data.csv -select "name,salary" -where "age > 30" -raw
 #### COUNT rows
 ```bash
 csvql -file data.csv -select "COUNT(*)"
-csvql -file data.csv -select "COUNT(id)" -where "status = 'active'"
+csvql -file data.csv -select "COUNT(id)" -where "status = active"
 csvql -file data.csv -select "COUNT(*)" -raw  # Raw output: just the number
 ```
 
-#### SUM values
+#### SUM and AVG values
 ```bash
 csvql -file data.csv -select "SUM(salary)"
-csvql -file data.csv -select "SUM(amount)" -where "category = 'sales'"
-```
-
-#### AVG (Average) values
-```bash
-csvql -file data.csv -select "AVG(age)"
-csvql -file data.csv -select "AVG(score)" -where "grade = 'A'"
+csvql -file data.csv -select "AVG(age)" -where "department = Engineering"
 ```
 
 #### MIN and MAX values
 ```bash
 csvql -file data.csv -select "MIN(age), MAX(age)"
-csvql -file data.csv -select "MIN(salary), MAX(salary)" -where "department = 'IT'"
+csvql -file data.csv -select "MIN(salary), MAX(salary)" -where "department = IT"
 csvql -file data.csv -select "MIN(salary), MAX(salary)" -raw  # Raw output: 50000,85000
 ```
 
@@ -144,7 +155,7 @@ csvql -file users.csv -update "age=29,city='Boston'" -where "name = 'John Doe'"
 
 #### DELETE rows
 ```bash
-csvql -file data.csv -delete -where "status = 'inactive'"
+csvql -file data.csv -delete -where "status = inactive"
 csvql -file users.csv -delete -where "age < 18"
 ```
 
@@ -185,29 +196,31 @@ id,name,age,department,salary,hire_date
 5,Eve Brown,31,HR,60000,2021-11-30
 ```
 
-### Example operations on employees.csv:
+### Bug bounty scope analysis
+For security researchers, csvql works great with HackerOne scope files:
+```bash
+# Analyze bug bounty scope
+csvql -file tests/scope.csv -select "identifier,max_severity" -where "eligible_for_bounty = true"
+csvql -file tests/scope.csv -select "COUNT(*)" -where "asset_type = WILDCARD"
+```
+
+### Practical Examples
 
 ```bash
-# Show all engineers
-csvql -file employees.csv -select "name,salary" -where "department = Engineering"
+# Show all high-value records
+csvql -file sales.csv -select "product,amount,date" -where "amount > 1000"
 
-# Find highest paid employees
-csvql -file employees.csv -select "name,salary" -order "salary desc" -limit 3
+# Find recent entries
+csvql -file logs.csv -select "timestamp,message" -order "timestamp desc" -limit 10
 
-# Calculate average salary by department  
-csvql -file employees.csv -select "AVG(salary)" -where "department = Engineering"
+# Calculate statistics
+csvql -file employees.csv -select "AVG(salary), COUNT(*)" -where "department = Engineering"
 
-# Add new employee
-csvql -file employees.csv -insert "id=6,name='Frank Miller',age=33,department='IT',salary=70000,hire_date='2024-03-01'"
+# Export filtered data for analysis  
+csvql -file products.csv -select "name,price,category" -where "category = electronics" -raw > electronics.csv
 
-# Give raise to all engineers  
-csvql -file employees.csv -update "salary=salary*1.1" -where "department = Engineering"
-
-# Remove employees hired before 2022
-csvql -file employees.csv -delete -where "hire_date < '2022-01-01'"
-
-# Export data in raw CSV format for further processing
-csvql -file employees.csv -select "name,salary" -where "department = IT" -raw > it_salaries.csv
+# Bug bounty scope analysis example
+csvql -file tests/scope.csv -select "identifier,max_severity" -where "max_severity = critical" -raw > critical_assets.txt
 ```
 
 ## Error Handling
@@ -249,9 +262,12 @@ csvql -file sales.csv -select "amount" -where "region = 'North'" -raw | awk '{su
 For complex operations, you can chain multiple csvql commands:
 
 ```bash
-# First filter, then aggregate
-csvql -file sales.csv -select "*" -where "region = 'North'" > north_sales.csv
-csvql -file north_sales.csv -select "SUM(amount), COUNT(*)"
+# First filter critical assets, then count by type
+csvql -file tests/scope.csv -select "*" -where "max_severity = critical" > critical_assets.csv
+csvql -file critical_assets.csv -select "COUNT(*)"
+
+# Export all wildcard domains for subdomain enumeration
+csvql -file tests/scope.csv -select "identifier" -where "asset_type = WILDCARD" -raw | sed 's/\*\.//' > domains_for_enum.txt
 ```
 
 ## Performance Considerations

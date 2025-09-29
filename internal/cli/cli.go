@@ -20,6 +20,7 @@ type Options struct {
 	Order      string `flag:"order" cfgFlagName:"order" description:"ORDER BY column [asc|desc]"`
 	Columns    bool   `flag:"columns" cfgFlagName:"columns" description:"Show CSV column headers"`
 	Raw        bool   `flag:"raw" cfgFlagName:"raw" description:"Show only table values without column headers"`
+	Output     string `flag:"output" cfgFlagName:"output" description:"Output file to save results"`
 	Help       bool   `flag:"h" cfgFlagName:"help" description:"Show help message"`
 }
 
@@ -41,6 +42,7 @@ func Execute() error {
 	flagSet.StringVar(&opts.Order, "order", "", "")
 	flagSet.BoolVar(&opts.Columns, "columns", false, "")
 	flagSet.BoolVar(&opts.Raw, "raw", false, "")
+	flagSet.StringVarP(&opts.Output, "output", "o", "", "")
 	flagSet.BoolVarP(&opts.Help, "help", "h", false, "")
 
 	// Parse flags
@@ -98,19 +100,20 @@ func ShowUsage(flagSet *goflags.FlagSet) {
 	fmt.Println("OUTPUT:")
 	fmt.Printf("   %-20s %s\n", "-columns", "Show CSV column headers")
 	fmt.Printf("   %-20s %s\n", "-raw", "Show only table values without column headers")
+	fmt.Printf("   %-20s %s\n", "-output, -o", "Output file to save results")
 	fmt.Println()
 	
 	// Misc flags
 	fmt.Printf("   %-20s %s\n", "-h, -help", "Show help message")
 	fmt.Println()
 	
-	fmt.Println("Examples:")
-	fmt.Printf("  %s -file data.csv -select \"name,age\" -where \"age > 30\"\n", "csvql")
-	fmt.Printf("  %s -file users.csv -update \"status='inactive'\" -where \"last_login<'2024-01-01'\"\n", "csvql")
-	fmt.Printf("  %s -file customers.csv -delete -where \"country='US'\"\n", "csvql")
-	fmt.Printf("  %s -file data.csv -insert \"name='John',age=28,status='active'\"\n", "csvql")
-	fmt.Printf("  %s -file data.csv -columns\n", "csvql")
-	fmt.Printf("  %s -file data.csv -select \"name,age\" -raw\n", "csvql")
+	// fmt.Println("Examples:")
+	// fmt.Printf("  %s -file tests/scope.csv -select \"identifier,max_severity\" -where \"max_severity = critical\"\n", "csvql")
+	// fmt.Printf("  %s -file tests/scope.csv -update \"max_severity='high'\" -where \"identifier = '*.example.com'\"\n", "csvql")
+	// fmt.Printf("  %s -file tests/scope.csv -delete -where \"eligible_for_bounty = false\"\n", "csvql")
+	// fmt.Printf("  %s -file tests/scope.csv -insert \"identifier='*.newdomain.com',asset_type='WILDCARD',max_severity='medium'\"\n", "csvql")
+	// fmt.Printf("  %s -file tests/scope.csv -columns\n", "csvql")
+	// fmt.Printf("  %s -file tests/scope.csv -select \"identifier,asset_type\" -raw\n", "csvql")
 }
 
 func runCSVQL(opts *Options) error {
@@ -123,6 +126,7 @@ func runCSVQL(opts *Options) error {
 	ops := &operations.CSVOperations{
 		FilePath: opts.File,
 		RawOutput: opts.Raw,
+		OutputFile: opts.Output,
 	}
 
 	// Initialize the operations

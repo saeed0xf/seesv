@@ -11,10 +11,11 @@ import (
 
 // CSVOperations handles all CSV-related operations
 type CSVOperations struct {
-	FilePath  string
-	DataFrame dataframe.DataFrame
-	Headers   []string
-	RawOutput bool
+	FilePath   string
+	DataFrame  dataframe.DataFrame
+	Headers    []string
+	RawOutput  bool
+	OutputFile string
 }
 
 // Initialize loads the CSV file and prepares the dataframe
@@ -180,8 +181,30 @@ func (ops *CSVOperations) ApplyLimit(df dataframe.DataFrame, limit int) datafram
 	return df.Subset(indices)
 }
 
-// PrintDataFrame prints the dataframe in a formatted table
+// PrintDataFrame prints the dataframe in a formatted table or saves to file
 func (ops *CSVOperations) PrintDataFrame(df dataframe.DataFrame) {
+	// If output file is specified, save to file instead of printing
+	if ops.OutputFile != "" {
+		if ops.RawOutput {
+			// For raw output, save as CSV without headers
+			err := ops.SaveDataFrameToFile(df, ops.OutputFile, false)
+			if err != nil {
+				fmt.Printf("Error saving to file: %v\n", err)
+				return
+			}
+		} else {
+			// For formatted output, save as CSV with headers
+			err := ops.SaveDataFrameToFile(df, ops.OutputFile, true)
+			if err != nil {
+				fmt.Printf("Error saving to file: %v\n", err)
+				return
+			}
+		}
+		fmt.Printf("Results saved to: %s\n", ops.OutputFile)
+		return
+	}
+
+	// Original stdout printing logic
 	if df.Nrow() == 0 {
 		if !ops.RawOutput {
 			fmt.Println("No rows to display.")
@@ -232,13 +255,34 @@ func (ops *CSVOperations) PrintDataFrame(df dataframe.DataFrame) {
 	}
 }
 
-// SaveDataFrameToCSV saves the dataframe back to CSV
-func (ops *CSVOperations) SaveDataFrameToCSV(df dataframe.DataFrame, filename string) error {
+// SaveDataFrameToFile saves the dataframe to a file with options for headers
+func (ops *CSVOperations) SaveDataFrameToFile(df dataframe.DataFrame, filename string, includeHeaders bool) error {
 	file, err := os.Create(filename)
 	if err != nil {
 		return fmt.Errorf("failed to create output file: %v", err)
 	}
 	defer file.Close()
 
+	if !includeHeaders {
+		// Write only data rows without headers
+		for i := 0; i < df.Nrow(); i++ {
+			for j := 0; j < df.Ncol(); j++ {
+				if j > 0 {
+					fmt.Fprint(file, ",")
+				}
+				val := df.Elem(i, j)
+				fmt.Fprintf(file, "%v", val)
+			}
+			fmt.Fprintln(file)
+		}
+		return nil
+	}
+
+	// Write with headers (default CSV format)
 	return df.WriteCSV(file)
+}
+
+// SaveDataFrameToCSV saves the dataframe back to CSV (backward compatibility)
+func (ops *CSVOperations) SaveDataFrameToCSV(df dataframe.DataFrame, filename string) error {
+	return ops.SaveDataFrameToFile(df, filename, true)
 }
