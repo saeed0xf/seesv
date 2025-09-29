@@ -1,17 +1,17 @@
-# csvql - Perform SQL like queries on CSV files
+# seesv - Search, Extract, Explore CSV
 
-csvql is a CLI tool written in Go that allows you to perform SQL like operations on CSV files. It supports SELECT, INSERT, UPDATE, DELETE, WHERE, ORDER BY, LIMIT, DISTINCT, and aggregation functions.
+seesv is a CLI tool written in Go that allows you to perform SQL like operations on CSV files. It supports SELECT, INSERT, UPDATE, DELETE, WHERE, ORDER BY, LIMIT, DISTINCT, and aggregation functions.
 
 ### Complex Queries
-For complex operations, you can chain multiple csvql commands:
+For complex operations, you can chain multiple seesv commands:
 
 ```bash
 # Filter and aggregate data
-csvql -file sales.csv -select "*" -where "region = North" > north_sales.csv
-csvql -file north_sales.csv -select "SUM(amount), COUNT(*)"
+seesv -file sales.csv -select "*" -where "region = North" > north_sales.csv
+seesv -file north_sales.csv -select "SUM(amount), COUNT(*)"
 
 # Export specific data for further analysis
-csvql -file users.csv -select "email" -where "status = active" -raw > active_emails.txt
+seesv -file users.csv -select "email" -where "status = active" -raw > active_emails.txt
 ```
 
 - **SELECT**: Query and filter CSV data with column selection
@@ -36,22 +36,22 @@ csvql -file users.csv -select "email" -where "status = active" -raw > active_ema
 ### Install from cli
 
 ```
-go install -v github.com/saeed0xf/csvql@latest
+go install -v github.com/saeed0xf/seesv@latest
 ```
 
 
 ### Build from source
 ```bash
 git clone <repository-url>
-cd csvql
+cd seesv
 go mod tidy
-go build -o csvql
+go build -o seesv
 ```
 
 ### Install binary
 ```bash
 # Make the binary available globally
-sudo cp csvql /usr/local/bin/
+sudo cp seesv /usr/local/bin/
 ```
 
 ## Usage
@@ -76,87 +76,87 @@ sudo cp csvql /usr/local/bin/
 
 #### Show column headers
 ```bash
-csvql -file data.csv -columns
+seesv -file data.csv -columns
 ```
 
 #### SELECT all columns
 ```bash
-csvql -file data.csv
+seesv -file data.csv
 ```
 
 #### SELECT specific columns
 ```bash
-csvql -file data.csv -select "name,age,city"
+seesv -file data.csv -select "name,age,city"
 ```
 
 #### SELECT with WHERE condition
 ```bash
-csvql -file data.csv -select "name,age" -where "age > 30"
-csvql -file data.csv -select "name,department" -where "status = active"
+seesv -file data.csv -select "name,age" -where "age > 30"
+seesv -file data.csv -select "name,department" -where "status = active"
 ```
 
 #### SELECT with ORDER BY
 ```bash
-csvql -file data.csv -select "name,age" -order "age desc"
-csvql -file data.csv -select "name,salary" -order "salary asc"
+seesv -file data.csv -select "name,age" -order "age desc"
+seesv -file data.csv -select "name,salary" -order "salary asc"
 ```
 
 #### SELECT with LIMIT
 ```bash
-csvql -file data.csv -select "name,age" -limit 10
+seesv -file data.csv -select "name,age" -limit 10
 ```
 
 #### SELECT with multiple conditions
 ```bash
-csvql -file data.csv -select "name,age,salary" -where "age > 25" -order "salary desc" -limit 5
+seesv -file data.csv -select "name,age,salary" -where "age > 25" -order "salary desc" -limit 5
 ```
 
 #### Raw output (CSV format without headers)
 ```bash
-csvql -file data.csv -select "name,age" -raw
-csvql -file data.csv -select "name,salary" -where "age > 30" -raw
+seesv -file data.csv -select "name,age" -raw
+seesv -file data.csv -select "name,salary" -where "age > 30" -raw
 ```
 
 ### Aggregation Functions
 
 #### COUNT rows
 ```bash
-csvql -file data.csv -select "COUNT(*)"
-csvql -file data.csv -select "COUNT(id)" -where "status = active"
-csvql -file data.csv -select "COUNT(*)" -raw  # Raw output: just the number
+seesv -file data.csv -select "COUNT(*)"
+seesv -file data.csv -select "COUNT(id)" -where "status = active"
+seesv -file data.csv -select "COUNT(*)" -raw  # Raw output: just the number
 ```
 
 #### SUM and AVG values
 ```bash
-csvql -file data.csv -select "SUM(salary)"
-csvql -file data.csv -select "AVG(age)" -where "department = Engineering"
+seesv -file data.csv -select "SUM(salary)"
+seesv -file data.csv -select "AVG(age)" -where "department = Engineering"
 ```
 
 #### MIN and MAX values
 ```bash
-csvql -file data.csv -select "MIN(age), MAX(age)"
-csvql -file data.csv -select "MIN(salary), MAX(salary)" -where "department = IT"
-csvql -file data.csv -select "MIN(salary), MAX(salary)" -raw  # Raw output: 50000,85000
+seesv -file data.csv -select "MIN(age), MAX(age)"
+seesv -file data.csv -select "MIN(salary), MAX(salary)" -where "department = IT"
+seesv -file data.csv -select "MIN(salary), MAX(salary)" -raw  # Raw output: 50000,85000
 ```
 
 ### Data Modification Operations
 
 #### INSERT new row
 ```bash
-csvql -file data.csv -insert "name='John Doe',age=28,city='New York'"
-csvql -file users.csv -insert "username='alice',email='alice@example.com',status='active'"
+seesv -file data.csv -insert "name='John Doe',age=28,city='New York'"
+seesv -file users.csv -insert "username='alice',email='alice@example.com',status='active'"
 ```
 
 #### UPDATE existing rows
 ```bash
-csvql -file data.csv -update "status='inactive'" -where "last_login < '2024-01-01'"
-csvql -file users.csv -update "age=29,city='Boston'" -where "name = 'John Doe'"
+seesv -file data.csv -update "status='inactive'" -where "last_login < '2024-01-01'"
+seesv -file users.csv -update "age=29,city='Boston'" -where "name = 'John Doe'"
 ```
 
 #### DELETE rows
 ```bash
-csvql -file data.csv -delete -where "status = inactive"
-csvql -file users.csv -delete -where "age < 18"
+seesv -file data.csv -delete -where "status = inactive"
+seesv -file users.csv -delete -where "age < 18"
 ```
 
 ## WHERE Condition Syntax
@@ -197,30 +197,30 @@ id,name,age,department,salary,hire_date
 ```
 
 ### Bug bounty scope analysis
-For security researchers, csvql works great with HackerOne scope files:
+For security researchers, seesv works great with HackerOne scope files:
 ```bash
 # Analyze bug bounty scope
-csvql -file tests/scope.csv -select "identifier,max_severity" -where "eligible_for_bounty = true"
-csvql -file tests/scope.csv -select "COUNT(*)" -where "asset_type = WILDCARD"
+seesv -file tests/scope.csv -select "identifier,max_severity" -where "eligible_for_bounty = true"
+seesv -file tests/scope.csv -select "COUNT(*)" -where "asset_type = WILDCARD"
 ```
 
 ### Practical Examples
 
 ```bash
 # Show all high-value records
-csvql -file sales.csv -select "product,amount,date" -where "amount > 1000"
+seesv -file sales.csv -select "product,amount,date" -where "amount > 1000"
 
 # Find recent entries
-csvql -file logs.csv -select "timestamp,message" -order "timestamp desc" -limit 10
+seesv -file logs.csv -select "timestamp,message" -order "timestamp desc" -limit 10
 
 # Calculate statistics
-csvql -file employees.csv -select "AVG(salary), COUNT(*)" -where "department = Engineering"
+seesv -file employees.csv -select "AVG(salary), COUNT(*)" -where "department = Engineering"
 
 # Export filtered data for analysis  
-csvql -file products.csv -select "name,price,category" -where "category = electronics" -raw > electronics.csv
+seesv -file products.csv -select "name,price,category" -where "category = electronics" -raw > electronics.csv
 
 # Bug bounty scope analysis example
-csvql -file tests/scope.csv -select "identifier,max_severity" -where "max_severity = critical" -raw > critical_assets.txt
+seesv -file tests/scope.csv -select "identifier,max_severity" -where "max_severity = critical" -raw > critical_assets.txt
 ```
 
 ## Error Handling
@@ -240,7 +240,7 @@ Always backup your CSV files before running UPDATE or DELETE operations:
 
 ```bash
 cp data.csv data.csv.backup
-csvql -f data.csv -update "status='processed'" -where "id > 100"
+seesv -f data.csv -update "status='processed'" -where "id > 100"
 ```
 
 ### Raw Output Mode
@@ -248,26 +248,26 @@ The `-raw` flag outputs data in pure CSV format without headers or formatting, p
 
 ```bash
 # Export filtered data to another CSV file
-csvql -file data.csv -select "name,salary" -where "department = 'IT'" -raw > it_employees.csv
+seesv -file data.csv -select "name,salary" -where "department = 'IT'" -raw > it_employees.csv
 
 # Get just the count for scripting
-COUNT=$(csvql -file data.csv -select "COUNT(*)" -raw)
+COUNT=$(seesv -file data.csv -select "COUNT(*)" -raw)
 echo "Total rows: $COUNT"
 
 # Pipe raw output to other tools
-csvql -file sales.csv -select "amount" -where "region = 'North'" -raw | awk '{sum+=$1} END {print sum}'
+seesv -file sales.csv -select "amount" -where "region = 'North'" -raw | awk '{sum+=$1} END {print sum}'
 ```
 
 ### Complex Queries
-For complex operations, you can chain multiple csvql commands:
+For complex operations, you can chain multiple seesv commands:
 
 ```bash
 # First filter critical assets, then count by type
-csvql -file tests/scope.csv -select "*" -where "max_severity = critical" > critical_assets.csv
-csvql -file critical_assets.csv -select "COUNT(*)"
+seesv -file tests/scope.csv -select "*" -where "max_severity = critical" > critical_assets.csv
+seesv -file critical_assets.csv -select "COUNT(*)"
 
 # Export all wildcard domains for subdomain enumeration
-csvql -file tests/scope.csv -select "identifier" -where "asset_type = WILDCARD" -raw | sed 's/\*\.//' > domains_for_enum.txt
+seesv -file tests/scope.csv -select "identifier" -where "asset_type = WILDCARD" -raw | sed 's/\*\.//' > domains_for_enum.txt
 ```
 
 ## Performance Considerations

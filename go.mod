@@ -1,4 +1,4 @@
-module csvql
+module seesv
 
 go 1.25.0
 

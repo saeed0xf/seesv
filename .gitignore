@@ -5,6 +5,7 @@
 *.so
 *.dylib
 csvql
+seesv
 csvql.exe
 
 # Test binary, built with `go test -c`

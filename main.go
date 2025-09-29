@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"csvql/internal/cli"
+	"seesv/internal/cli"
 )
 
 func main() {

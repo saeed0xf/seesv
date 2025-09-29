@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/projectdiscovery/goflags"
-	"csvql/internal/operations"
+	"seesv/internal/operations"
 )
 
 // Options represents the CLI configuration
@@ -63,12 +63,12 @@ func Execute() error {
 		return fmt.Errorf("missing required flag: -file")
 	}
 
-	return runCSVQL(opts)
+	return runSeeCSV(opts)
 }
 
 // ShowUsage displays help information
 func ShowUsage(flagSet *goflags.FlagSet) {
-	fmt.Println("csvql - SQL-like queries on CSV files")
+	fmt.Println("seesv - Perform SQL like queries on CSV files. Search, Extract, Explore CSV.")
 	fmt.Println()
 	fmt.Println("Usage:")
 	fmt.Printf("  %s [flags]\n", os.Args[0])
@@ -116,7 +116,7 @@ func ShowUsage(flagSet *goflags.FlagSet) {
 	// fmt.Printf("  %s -file tests/scope.csv -select \"identifier,asset_type\" -raw\n", "csvql")
 }
 
-func runCSVQL(opts *Options) error {
+func runSeeCSV(opts *Options) error {
 	// Validate that file exists
 	if _, err := os.Stat(opts.File); os.IsNotExist(err) {
 		return fmt.Errorf("file does not exist: %s", opts.File)
