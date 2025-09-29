@@ -2,6 +2,39 @@
 
 seesv is a CLI tool written in Go that allows you to perform SQL like operations on CSV files. It supports SELECT, INSERT, UPDATE, DELETE, WHERE, ORDER BY, LIMIT, DISTINCT, and aggregation functions.
 
+## Help Menu
+
+```
+seesv - Perform SQL like queries on CSV files. Search, Extract, Explore CSV.
+
+Usage:
+  seesv [flags]
+
+Flags:
+
+INPUT:
+   -file, -f            CSV input file (required)
+
+OPERATIONS:
+   -select              SELECT columns (comma-separated)
+   -insert              INSERT new row (col1=val1,col2=val2)
+   -update              UPDATE column values (col1=val1,col2=val2)
+   -delete              DELETE rows matching WHERE condition
+
+QUERY MODIFIERS:
+   -where               WHERE condition (SQL-like)
+   -order               ORDER BY column [asc|desc]
+   -limit               LIMIT number of rows returned
+
+OUTPUT:
+   -columns             Show CSV column headers
+   -raw                 Show only table values without column headers
+   -output, -o          Output file to save results
+
+   -h, -help            Show help message
+
+```
+
 ## Supports
 
 - **SELECT**: Query and filter CSV data with column selection
@@ -15,8 +48,6 @@ seesv is a CLI tool written in Go that allows you to perform SQL like operations
 - **Aggregations**: COUNT, SUM, AVG, MIN, MAX functions
 - **Column listing**: Display all available columns in CSV files
 - **Raw output**: CSV format output for piping and scripting
-- **Project Discovery-style CLI**: Clean, organized help menu and single dash flags
-- **Error handling**: Comprehensive validation and error messages
 
 ## Installation
 
@@ -32,7 +63,7 @@ go install -v github.com/saeed0xf/seesv@latest
 
 ### Build from source
 ```bash
-git clone <repository-url>
+git clone https://github.com/saeed0xf/seesv.git
 cd seesv
 go mod tidy
 go build -o seesv
@@ -44,23 +75,7 @@ go build -o seesv
 sudo cp seesv /usr/local/bin/
 ```
 
-## Usage
-
-### Command Line Flags
-
-- `-file <file>` (or `-f`) - CSV input file (required)
-- `-select "<cols>"` - SELECT columns (comma-separated)
-- `-where "<condition>"` - WHERE condition (SQL-like)  
-- `-update "<col=val,...>"` - UPDATE column values
-- `-delete` - DELETE rows matching WHERE condition
-- `-insert "<col=val,...>"` - INSERT new row
-- `-limit <n>` - LIMIT number of rows returned
-- `-order "<col> [asc|desc]"` - ORDER BY column with direction
-- `-columns` - Show CSV column headers
-- `-raw` - Show only table values without column headers (CSV format)
-- `-h` (or `-help`) - Show help message
-
-## Examples
+## Usage Examples
 
 ### Basic Operations
 
