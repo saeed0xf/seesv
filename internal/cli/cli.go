@@ -50,6 +50,12 @@ func Execute() error {
 		return fmt.Errorf("failed to parse flags: %v", err)
 	}
 
+	// Check if no arguments were provided (just the command name)
+	if len(os.Args) == 1 {
+		ShowUsage(flagSet)
+		return nil
+	}
+
 	// Show help if requested
 	if opts.Help {
 		ShowUsage(flagSet)
@@ -58,9 +64,9 @@ func Execute() error {
 
 	// Validate required flags
 	if opts.File == "" {
-		fmt.Fprintln(os.Stderr, "Error: -file flag is required")
 		ShowUsage(flagSet)
-		return fmt.Errorf("missing required flag: -file")
+		fmt.Fprintln(os.Stderr, "missing required flag: -file")
+		os.Exit(1)
 	}
 
 	return runSeeCSV(opts)
