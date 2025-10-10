@@ -36,7 +36,7 @@ OUTPUT:
 ```
 ### Basic example video
 
-https://github.com/saeed0xf/seesv/blob/main/assets/basic_example.mp4
+https://github.com/saeed0x1/seesv/blob/main/assets/basic_example.mp4
 
 ## Supports
 
@@ -60,13 +60,13 @@ https://github.com/saeed0xf/seesv/blob/main/assets/basic_example.mp4
 ### Install from cli
 
 ```
-go install -v github.com/saeed0xf/seesv@latest
+go install -v github.com/saeed0x1/seesv@latest
 ```
 
 
 ### Build from source
 ```bash
-git clone https://github.com/saeed0xf/seesv.git
+git clone https://github.com/saeed0x1/seesv.git
 cd seesv
 go mod tidy
 go build -o seesv
@@ -301,4 +301,4 @@ seesv -file tests/scope.csv -select "identifier" -where "asset_type = WILDCARD" 
 
 ## License
 
-This project is licensed under the [MIT](https://github.com/saeed0xf/seesv/LICENSE) License - see the LICENSE file for details.
+This project is licensed under the [MIT](https://github.com/saeed0x1/seesv/LICENSE) License - see the LICENSE file for details.
